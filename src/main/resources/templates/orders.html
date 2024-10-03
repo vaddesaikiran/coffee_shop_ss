@@ -5,14 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Orders</title>
     <script>
+        // Function to get CSRF token from meta tag
+        function getCsrfToken() {
+            const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+            return token;
+        }
+
         function showAlert(message) {
             alert(message);
         }
 
         function handleAction() {
             const orderId = document.getElementById('orderIdInput').value;
+
+            // Fetch CSRF token
+            const csrfToken = getCsrfToken();
+
+            // Add CSRF token to request header
             fetch(`/orders/accept/${orderId}`, {
-                method: 'PUT'
+                method: 'PUT',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                }
             })
             .then(response => {
                 if (response.ok) {
@@ -41,6 +55,8 @@
     </script>
 </head>
 <body>
+    <meta name="_csrf" th:content="${_csrf.token}"/> <!-- Inject CSRF token into the meta tag -->
+    
     <nav>
         <a href="/buycoffee">Buy Coffee</a>
         <a href="/home">Home</a>

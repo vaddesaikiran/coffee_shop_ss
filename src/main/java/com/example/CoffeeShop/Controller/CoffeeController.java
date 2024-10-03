@@ -2,6 +2,7 @@ package com.example.CoffeeShop.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import com.example.CoffeeShop.Service.CoffeeService;
 import com.example.CoffeeShop.entity.Coffee;
 import com.example.CoffeeShop.entity.Order;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
 
@@ -62,5 +65,12 @@ public class CoffeeController {
             return ResponseEntity.ok("Order accepted for " + order.getCoffeeName());
         }
         return ResponseEntity.notFound().build();
+    }
+    
+    @GetMapping("/csrf-token")
+    public String getCsrfToken(Model model, HttpServletRequest request) {
+        CsrfToken csrfToken = (CsrfToken) request.getAttribute("_csrf");
+        model.addAttribute("csrfToken", csrfToken);
+        return "csrf-token";
     }
 }
