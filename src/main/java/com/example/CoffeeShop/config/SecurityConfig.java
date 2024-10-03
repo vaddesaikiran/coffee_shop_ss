@@ -22,8 +22,7 @@ public class SecurityConfig {
               .authorizeHttpRequests(requests -> requests
                       .requestMatchers("/home", "contact-us").permitAll()
                       .anyRequest().authenticated())
-              .formLogin(Customizer.withDefaults())
-              .httpBasic(Customizer.withDefaults());
+            .httpBasic(Customizer.withDefaults());
       return http.build();
 
   }
@@ -47,4 +46,5 @@ public class SecurityConfig {
 
         return new InMemoryUserDetailsManager(user1, user2, user3);
     }
+    
 }
