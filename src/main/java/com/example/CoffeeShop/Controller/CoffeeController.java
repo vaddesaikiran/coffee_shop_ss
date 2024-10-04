@@ -2,6 +2,7 @@ package com.example.CoffeeShop.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
@@ -62,7 +63,7 @@ public class CoffeeController {
     }
 
     @PutMapping("/orders/accept/{orderId}")
-    @PreAuthorize("hasAuthority('view_order','accept_order')")
+    @PostAuthorize("hasAuthority('accept_order') or returnObject.user.username == authentication.name")
     public ResponseEntity<String> acceptOrder(@PathVariable Long orderId) {
         Order order = coffeeService.getOrderById(orderId);
         if (order != null) {
