@@ -21,11 +21,10 @@ public class SecurityConfig {
             http
               .authorizeHttpRequests(requests -> requests
                       .requestMatchers("/home", "/contact-us","/csrf-token","/csrf").permitAll()
+                      .requestMatchers("/orders/**", "/orders/accept/**").hasRole("ADMIN")
                       .anyRequest().authenticated())
               .formLogin(Customizer.withDefaults())
-              .httpBasic(Customizer.withDefaults())
               .csrf(Customizer.withDefaults());
-//              .csrf(Cust -> Cust.disable());
       return http.build();
 
   }
