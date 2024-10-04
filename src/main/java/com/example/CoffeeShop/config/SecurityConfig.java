@@ -28,7 +28,7 @@ public class SecurityConfig {
               .sessionManagement(session -> 
                session
                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-               .sessionFixation((sessionFixation) -> sessionFixation.newSession())
+               .sessionFixation((sessionFixation) -> sessionFixation.migrateSession())
                );
             
       return http.build();
