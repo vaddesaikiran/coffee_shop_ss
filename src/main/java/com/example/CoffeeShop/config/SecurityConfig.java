@@ -24,11 +24,13 @@ public class SecurityConfig {
                       .requestMatchers("/home", "/contact-us","/csrf-token","/csrf").permitAll()
                       .anyRequest().authenticated())
               .formLogin(Customizer.withDefaults())
+              
               .sessionManagement(session -> 
                session
                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-               .maximumSessions(1)
+               .sessionFixation((sessionFixation) -> sessionFixation.newSession())
                );
+            
       return http.build();
   }
 
