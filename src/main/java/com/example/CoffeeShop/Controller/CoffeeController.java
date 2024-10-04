@@ -73,4 +73,6 @@ public class CoffeeController {
         model.addAttribute("csrfToken", csrfToken);
         return "csrf-token";
     }
+    
+    
 }

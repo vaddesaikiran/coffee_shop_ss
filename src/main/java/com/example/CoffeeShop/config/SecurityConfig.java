@@ -28,7 +28,9 @@ public class SecurityConfig {
               .sessionManagement(session -> 
                session
                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-               .sessionFixation((sessionFixation) -> sessionFixation.migrateSession())
+               .invalidSessionUrl("/session-expired")
+               .maximumSessions(1)
+               .expiredUrl("/session-expired")
                );
             
       return http.build();

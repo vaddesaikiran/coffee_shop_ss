@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Session Expired</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+    <div class="container">
+        <h2>Session Expired</h2>
+        <p>Your session has expired or is invalid. Please log in again.</p>
+        <a th:href="@{/login}" class="btn btn-primary">Login</a>
+    </div>
+</body>
+</html>
