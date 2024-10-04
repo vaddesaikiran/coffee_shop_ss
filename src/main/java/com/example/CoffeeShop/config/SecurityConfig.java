@@ -21,7 +21,8 @@ public class SecurityConfig {
             http
               .authorizeHttpRequests(requests -> requests
                       .requestMatchers("/home", "/contact-us","/csrf-token","/csrf").permitAll()
-                      .requestMatchers("/orders/**", "/orders/accept/**").hasRole("ADMIN")
+                      .requestMatchers("/orders/**").hasAuthority("view_order")
+                      .requestMatchers("orders/accept/**").hasRole("ADMIN")                      
                       .anyRequest().authenticated())
               .formLogin(Customizer.withDefaults())
               .csrf(Customizer.withDefaults());
@@ -32,8 +33,9 @@ public class SecurityConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         UserDetails user1 = User.withUsername("saikiran")
-                .password("{noop}s@123") // {noop} indicates no password encoding
+                .password("{noop}s@123")
                 .roles("USER")
+                .authorities("view_order")
                 .build();
 
         UserDetails user2 = User.withUsername("kishore")
@@ -44,6 +46,7 @@ public class SecurityConfig {
         UserDetails user3 = User.withUsername("rahul")
                 .password("{noop}r@123")
                 .roles("ADMIN")
+                .authorities("view_order","accept_order")
                 .build();
 
         return new InMemoryUserDetailsManager(user1, user2, user3);
