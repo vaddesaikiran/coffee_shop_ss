@@ -2,6 +2,7 @@ package com.example.CoffeeShop.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -49,8 +50,11 @@ public class CoffeeController {
         }
         return ResponseEntity.notFound().build();
     }
-
+    
+    
+    
     @GetMapping("/orders")
+    @PreAuthorize("hasAuthority('view_order')")
     public String getOrders(Model model) {
         List<Order> orders = coffeeService.getAllOrders();
         model.addAttribute("orders", orders);
@@ -58,6 +62,7 @@ public class CoffeeController {
     }
 
     @PutMapping("/orders/accept/{orderId}")
+    @PreAuthorize("hasAuthority('view_order','accept_order')")
     public ResponseEntity<String> acceptOrder(@PathVariable Long orderId) {
         Order order = coffeeService.getOrderById(orderId);
         if (order != null) {
