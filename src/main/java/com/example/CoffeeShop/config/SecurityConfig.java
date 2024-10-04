@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,17 +24,18 @@ public class SecurityConfig {
                       .requestMatchers("/home", "/contact-us","/csrf-token","/csrf").permitAll()
                       .anyRequest().authenticated())
               .formLogin(Customizer.withDefaults())
-              .httpBasic(Customizer.withDefaults())
-              .csrf(Customizer.withDefaults());
-//              .csrf(Cust -> Cust.disable());
+              .sessionManagement(session -> 
+               session
+               .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+               .maximumSessions(1)
+               );
       return http.build();
-
   }
 
     @Bean
     public UserDetailsService userDetailsService() {
         UserDetails user1 = User.withUsername("saikiran")
-                .password("{noop}s@123") // {noop} indicates no password encoding
+                .password("{noop}s@123")
                 .roles("USER")
                 .build();
 
